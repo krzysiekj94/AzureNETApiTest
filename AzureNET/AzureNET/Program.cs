@@ -12,6 +12,7 @@ namespace AzureNET
             // Creates an instance of a speech config with specified subscription key and service region.
             // Replace with your own subscription key and service region (e.g., "westeurope").
             var config = SpeechConfig.FromSubscription( AzurePrivateData.SUBSCRIPTION_KEY, AzurePrivateData.REGION_STRING );
+            config.OutputFormat = OutputFormat.Detailed;
             var stopRecognition = new TaskCompletionSource<int>();
 
             // Creates a speech recognizer using file as audio input.
@@ -34,14 +35,11 @@ namespace AzureNET
                             Console.WriteLine($"Duration:\t{e.Result.Duration}");
                             Console.WriteLine($"Duration:\t{e.Result.Duration}");
                             Console.WriteLine("Best Results:");
-                            Console.Out.WriteLine("Start!");
 
-                            foreach ( var result in e.Result.Best() )
+                            foreach( var result in e.Result.Best() )
                             {
-                                Console.WriteLine( result );
+                                Console.WriteLine($"Text: {result.Text} Confidence: {result.Confidence}" );
                             }
-
-                            Console.Out.WriteLine("End!");
                         }
                         else if( e.Result.Reason == ResultReason.NoMatch )
                         {
@@ -93,7 +91,7 @@ namespace AzureNET
             // Creates an instance of a speech config with specified subscription key and service region.
             // Replace with your own subscription key and service region (e.g., "westus").
             var config = SpeechConfig.FromSubscription( AzurePrivateData.SUBSCRIPTION_KEY, AzurePrivateData.REGION_STRING );
-            //config.SpeechRecognitionLanguage = "pl-PL";
+            //config.OutputFormat = OutputFormat.Detailed;
             
             // Creates a speech recognizer.
             using (var recognizer = new SpeechRecognizer(config))
@@ -125,15 +123,15 @@ namespace AzureNET
                         Console.WriteLine($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
                         Console.WriteLine($"CANCELED: Did you update the subscription info?");
                     }
-                }
+                } 
             }
         }
 
         static void Main()
         {
-            //RecognizeFromFile( "whatstheweatherlike.wav" );
+            RecognizeFromFile( "whatstheweatherlikeTest.wav" );
             //RecognizeFromFile("speechNormal.wav");
-            RecognizeFromFile( "speechSlower.wav" );
+            //RecognizeFromFile( "speechSlower.wav" );
 
             Console.WriteLine("Please press a key to continue.");
             Console.ReadLine();
