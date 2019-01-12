@@ -14,6 +14,7 @@ namespace AzureNET
             var config = SpeechConfig.FromSubscription( AzurePrivateData.SUBSCRIPTION_KEY, AzurePrivateData.REGION_STRING );
             config.OutputFormat = OutputFormat.Detailed;
             var stopRecognition = new TaskCompletionSource<int>();
+            int counter = 0;
 
             // Creates a speech recognizer using file as audio input.
             // Replace with your own audio file name.
@@ -35,10 +36,17 @@ namespace AzureNET
                             Console.WriteLine($"Duration:\t{e.Result.Duration}");
                             Console.WriteLine($"Duration:\t{e.Result.Duration}");
                             Console.WriteLine("Best Results:");
-
+                            
                             foreach( var result in e.Result.Best() )
                             {
-                                Console.WriteLine($"Text: {result.Text} Confidence: {result.Confidence}" );
+                                counter++;
+                                Console.WriteLine(
+                                    $"\nRezultat: {counter} " +
+                                    $"\nConfidence: {result.Confidence} " +
+                                    $"\nLexical: {result.LexicalForm}" +
+                                    $"\nITN: {result.NormalizedForm}" +
+                                    $"\nMaskedITN: {result.MaskedNormalizedForm}" +
+                                    $"\nDisplay: {result.Text}");
                             }
                         }
                         else if( e.Result.Reason == ResultReason.NoMatch )
@@ -129,9 +137,27 @@ namespace AzureNET
 
         static void Main()
         {
-            RecognizeFromFile( "whatstheweatherlikeTest.wav" );
+            //RecognizeFromFile( "whatstheweatherlikeTest.wav" );
             //RecognizeFromFile("speechNormal.wav");
-            //RecognizeFromFile( "speechSlower.wav" );
+            //RecognizeFromFile("whatstheweatherlikeIncreaseTempo.wav");
+            //RecognizeFromFile("whatstheweatherlikeDecreaseTempo.wav");
+            //RecognizeFromFile("whatstheweatherlikeIncreaseTempo175.wav");
+            //RecognizeFromFile("whatstheweatherlikeIncreaseTempo175_1.wav");
+            //RecognizeFromFile("whatstheweatherlikeIncreaseTempo176.wav");
+            //RecognizeFromFile("whatstheweatherlikeIncreaseTempo200.wav");
+            //RecognizeFromFile("whatstheweatherlikeDecreaseTempo75.wav");
+            //RecognizeFromFile("whatstheweatherlikeDecreaseTempo85.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicDecrease10dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicDecrease1dB.wav");
+              RecognizeFromFile("whatstheweatherlikeMusicDecrease2dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicDecrease3dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicDecrease5dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicNormal.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicIncrease5dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicIncrease10dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicIncrease12dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicIncrease13dB.wav");
+            //RecognizeFromFile("whatstheweatherlikeMusicIncrease14dB.wav");
 
             Console.WriteLine("Please press a key to continue.");
             Console.ReadLine();
